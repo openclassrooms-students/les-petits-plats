@@ -7,6 +7,14 @@
     <title>Les Petits Plats</title>
 
     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
       href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Manrope:wght@200&amp;display=swap"
       rel="stylesheet"
     />
@@ -16,50 +24,160 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <header></header>
-    <main>
-        <div class="container">
-  <section class="mx-auto my-5" style="max-width: 23rem;">
-
-    <div class="card">
-      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="https://mdbootstrap.com/img/Photos/Horizontal/Food/8-col/img (5).jpg" class="img-fluid" />
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+    <header>
+      <!-- Navbar -->
+      <nav class="navbar">
+        <a href="/index.html">
+          <img
+            src="./assets/logo.png"
+            alt="logo du site"
+            class="object-fit-cover"
+          />
         </a>
-      </div>
-      <div class="card-body">
-        <h3 class="card-title font-weight-bold"><a>La Sirena restaurant</a></h3>
-    
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the bulk of the
-          card's content.
-        </p>
-        <hr class="my-4" />
-        <p class="lead"><strong>Tonight's availability</strong></p>
-        <ul class="list-unstyled list-inline d-flex justify-content-between">
-          <li class="list-inline-item me-0">
-            <div class="chip me-0">5:30PM</div>
-          </li>
-          <li class="list-inline-item me-0">
-            <div class="chip bg-secondary text-white me-0">7:30PM</div>
-          </li>
-          <li class="list-inline-item me-0">
-            <div class="chip me-0">8:00PM</div>
-          </li>
-          <li class="list-inline-item me-0">
-            <div class="chip me-0">9:00PM</div>
-          </li>
-        </ul>
-        <a href="#!" class="btn btn-link link-secondary p-md-1 mb-0">Button</a>
-      </div>
-    </div>
+      </nav>
+      <!-- Navbar -->
 
-  </section>
-</div>
+      <!-- Background image -->
+      <div
+        id="intro-example"
+        class="p-5 text-center hero-banner-img d-flex flex-column align-items-center"
+      >
+        <!-- <div class="mask" style="background-color: rgba(0, 0, 0, 0.7)"> -->
+        <div class="w-75 m-auto">
+          <h1 class="title">
+            CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET
+            DÉLICIEUSES
+          </h1>
+
+          <form name="search" class="search">
+            <input
+              type="search"
+              id="search-input"
+              class="search-input"
+              placeholder="Rechercher une recette, un ingrédient, ..."
+            />
+            <span class="search-icon">
+              <i class="fa fa-search"></i>
+            </span>
+          </form>
+        </div>
+        <!-- </div> -->
+      </div>
+      <!-- Background image -->
+    </header>
+    <main>
+      <div class="container mx-auto">
+        <div class="filter-section">
+          <div class="recipes_dropdown">
+            <div class="dropdown-container">
+              <!-- <div class="dropdown">
+                <button class="dropbtn">
+                  <span>Ingrédients</span>
+                  <i class="fa-solid fa-chevron-up"></i>
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                  <input type="search" placeholder="Search.." id="myInput" />
+                  <ul class="ingredients-list">
+                    <li>Jus de citron</li>
+                    <li>Glaçons</li>
+                    <li>Tomate</li>
+                  </ul>
+                </div>
+              </div> -->
+              <div class="dropdown">
+                <button class="dropdown__btn" data-dropdown="ingredients">
+                  <span>Ingrédients</span>
+                  <i class="fa-solid fa-chevron-up"></i>
+                </button>
+                <div class="dropdown__content">
+                  <input
+                    type="search"
+                    placeholder="Search.."
+                    class="dropdown__input"
+                  />
+                  <ul class="dropdown__list"
+                    <li>Jus de citron</li>
+                    <li>Glaçons</li>
+                    <li>Tomate</li>
+                    <li>Pommes</li>
+                    <li>Crème de coco</li>
+                    <li>Lait de coco</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <p class="total-recipes">1500 recettes</p>
+          </div>
+          <div class="tags">
+            <!-- <button class="tag">
+              Notifications <i class="fa-sharp fa-solid fa-x fa-sm"></i>
+            </button>
+            <button class="tag">
+              Notifications <i class="fa-sharp fa-solid fa-x fa-sm"></i>
+            </button>
+            <button class="tag">
+              Notifications <i class="fa-sharp fa-solid fa-x fa-sm"></i>
+            </button>
+            <button class="tag">
+              Notifications <i class="fa-sharp fa-solid fa-x fa-sm"></i>
+            </button>
+            <button class="tag">
+              Notifications <i class="fa-sharp fa-solid fa-x fa-sm"></i>
+            </button> -->
+          </div>
+        </div>
+
+        <section class="recipes-container">
+          <div class="card">
+            <img src="./assets/recipes/Recette01.jpg" class="card__image" />
+            <div class="card-body">
+              <h2 class="card__title">
+                <a>Limonade de Coco</a>
+              </h2>
+
+              <div class="mb-4">
+                <h3 class="card__subtitle">Recette</h3>
+                <p class="card__description">
+                  Mettre les glaçons à votre goût dans le blender, Ajouter le
+                  lait la crème de coco, le jus de 2 citrons et le sucre
+                  ensemble. Mixer jusqu'à obtenir la consistance désirée.
+                </p>
+              </div>
+
+              <div class="mt-2">
+                <h3 class="card__subtitle">Ingrédients</h3>
+                <ul class="ingredients">
+                  <li class="ingredient">
+                    <span class="ingredient__name">Lait de coco</span>
+                    <span class="ingredient__quantity">400 ml</span>
+                  </li>
+                  <li class="ingredient">
+                    <span class="ingredient__name">Jus de citron</span>
+                    <span class="ingredient__quantity">2</span>
+                  </li>
+                  <li class="ingredient">
+                    <span class="ingredient__name">Créme de coco</span>
+                    <span class="ingredient__quantity">4 cuillères</span>
+                  </li>
+                  <li class="ingredient">
+                    <span class="ingredient__name">Sucre</span>
+                    <span class="ingredient__quantity">20g</span>
+                  </li>
+                  <li class="ingredient">
+                    <span class="ingredient__name">Glaçons</span>
+                    <span class="ingredient__quantity">2</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
-
+    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>
