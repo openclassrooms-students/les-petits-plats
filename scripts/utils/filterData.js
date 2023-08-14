@@ -18,20 +18,29 @@ export const filterRecipesByTags = (recipes, tags) =>
   recipes.filter((recipe) => {
     return tags.every((tag) => {
       return recipe.ingredients.some((ingredient) => {
-        return ingredient.ingredient == tag.ingredients;
+        return (
+          ingredient.ingredient == tag.ingredients ||
+          recipe.appliance == tag.appliance ||
+          recipe.ustensils.includes(tag.ustensils)
+        );
       });
     });
   });
 
-export const handleChangeData = (searchValue, recipes, tags, data) => {
-  data = recipes;
+export const handleChangeData = (
+  searchValue = "",
+  recipes,
+  tags,
+  refresh = true
+) => {
   if (searchValue.length >= 3) {
-    data = filterRecipesBySearchValue(recipes, searchValue);
+    recipes = filterRecipesBySearchValue(recipes, searchValue);
   }
 
   if (tags.length > 0) {
-    data = filterRecipesByTags(data, tags);
+    recipes = filterRecipesByTags(recipes, tags);
   }
+  if (refresh) Recipe(searchValue, recipes, tags);
 
-  Recipe(searchValue, data, tags);
+  return recipes;
 };

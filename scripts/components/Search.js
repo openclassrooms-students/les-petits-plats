@@ -2,7 +2,7 @@ import { fetchData } from "../utils/fetchData.js";
 import { filterRecipesBySearchValue } from "../utils/filterData.js";
 import Recipe from "./Recipes.js";
 
-const Search = (searchValue) => {
+const Search = (searchValue, recipes) => {
   const search = document.querySelector("#search-input");
   const form = document.querySelector("form[name='search']");
 
@@ -26,13 +26,12 @@ const Search = (searchValue) => {
       return;
     }
 
-    let data = await fetchData();
-
-    if (!searchValue) return Recipe(data, searchValue);
+    if (!searchValue) return Recipe(recipes, searchValue);
 
     if (searchValue.length >= 3) {
-      data = filterRecipesBySearchValue(data, searchValue);
-      Recipe(searchValue, data);
+      recipes = await fetchData();
+      recipes = filterRecipesBySearchValue(recipes, searchValue);
+      Recipe(searchValue, recipes);
     }
   };
 

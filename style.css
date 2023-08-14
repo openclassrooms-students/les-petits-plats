@@ -235,6 +235,12 @@ button.tag {
 }
 
 .dropdown-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 63px;
+  user-select: none;
 }
 
 .dropdown__btn {
