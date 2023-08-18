@@ -1,3 +1,4 @@
+import createDropDownListUniqueFactory from "../factories/createDropDownListUniqueFactory.js";
 import { handleChangeData } from "../utils/filterData.js";
 import Tags from "./Tags.js";
 
@@ -22,51 +23,12 @@ const DropDown = (recipes, tags) => {
     createListElements(listDropdown, filterName);
   };
 
-  const handleIngredientsListUnique = (
-    recipes,
-    filterName,
-    tags,
-  ) => {
-
-    const data = handleChangeData(search.value, recipes, tags, false);
-
-    const lists = data.map((recipe) => recipe[filterName]);
-
-    const ustensilsList = lists
-      .flat()
-      .map((ustensils) => ustensils)
-      .sort();
-
-    const ingredientsList = lists
-      .flat()
-      .map((ingredient) => ingredient.ingredient)
-      .sort();
-
-    let result = [];
-
-    switch (filterName) {
-      case "ingredients":
-        result = [...new Set(ingredientsList)];
-        break;
-
-      case "appliance":
-        result = [...new Set(lists)];
-        break;
-
-      case "ustensils":
-        result = [...new Set(ustensilsList)];
-        break;
-    }
-
-    return result;
-  };
 
   const handleAddTag = (e) => {
     const listDropdown = e.currentTarget.parentNode;
     const contentDropdown = listDropdown.parentNode;
     const dropdown = contentDropdown.parentNode;
-    const filterName =
-      dropdown.querySelector(".dropdown__btn").dataset.dropdown;
+    const filterName = dropdown.querySelector(".dropdown__btn").dataset.dropdown;
 
     const value = e.target.textContent;
     if (tags.some((tag) => tag[filterName] === value)) return;
@@ -84,14 +46,26 @@ const DropDown = (recipes, tags) => {
   };
 
   const createListElements = (listDropdown, filterName) => {
-    handleIngredientsListUnique(recipes, filterName, tags).forEach(
-      (ingredient) => {
-        const li = document.createElement("li");
-        li.textContent = ingredient;
-        li.addEventListener("click", handleAddTag);
-        listDropdown.appendChild(li);
-      }
-    );
+    const data = {
+      search: search.value,
+      recipes: recipes,
+      tags: tags,
+      refresh: false,
+    };
+
+    const list = createDropDownListUniqueFactory(filterName, data);
+
+    const fragment = document.createDocumentFragment();
+
+    list.forEach((sortItem) => {
+      const li = document.createElement("li");
+      li.textContent = sortItem;
+      li.addEventListener("click", handleAddTag);
+      fragment.appendChild(li);
+    });
+
+    listDropdown.innerHTML = "";
+    listDropdown.appendChild(fragment);
   };
 
   const handleFilter = (e) => {

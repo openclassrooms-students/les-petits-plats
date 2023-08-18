@@ -4,9 +4,6 @@ import Search from "./components/Search.js";
 import DropDown from "./components/DropDown.js";
 import Tags from "./components/Tags.js";
 
-
-
-
 const main = async () => {
   let tags = [];
   let recipes = await fetchData();

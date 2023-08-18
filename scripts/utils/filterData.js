@@ -1,31 +1,53 @@
 import Recipe from "../components/Recipes.js";
 
 export const filterRecipesBySearchValue = (recipes, searchValue) => {
+  const lowerSearchValue = searchValue.toLowerCase();
+
   return recipes.filter((recipe) => {
-    recipe.name.toLowerCase();
-    const regex = new RegExp(searchValue, "gi");
-    return (
-      recipe.name.match(regex) ||
-      recipe.description.match(regex) ||
-      recipe.ingredients.find((ingredient) =>
-        ingredient.ingredient.match(regex)
-      )
+    const lowerName = recipe.name.toLowerCase();
+    const lowerDescription = recipe.description.toLowerCase();
+
+    const nameOrDescriptionMatch =
+      lowerName.includes(lowerSearchValue) ||
+      lowerDescription.includes(lowerSearchValue);
+
+    if (nameOrDescriptionMatch) {
+      return true;
+    }
+
+    const ingredientsMatch = recipe.ingredients.some((ingredient) =>
+      ingredient.ingredient.toLowerCase().includes(lowerSearchValue)
     );
+
+    return ingredientsMatch;
   });
 };
 
-export const filterRecipesByTags = (recipes, tags) =>
-  recipes.filter((recipe) => {
+export const filterRecipesByTags = (recipes, tags) => {
+  if (tags.length === 0) {
+    return recipes; // Pas besoin de filtrer si aucune balise n'est sélectionnée
+  }
+
+  return recipes.filter((recipe) => {
     return tags.every((tag) => {
-      return recipe.ingredients.some((ingredient) => {
-        return (
-          ingredient.ingredient == tag.ingredients ||
-          recipe.appliance == tag.appliance ||
-          recipe.ustensils.includes(tag.ustensils)
-        );
-      });
+      if (
+        tag.ingredients &&
+        !recipe.ingredients.some(
+          (ingredient) => ingredient.ingredient === tag.ingredients
+        )
+      ) {
+        return false; // La balise ingrédient ne correspond pas
+      }
+      if (tag.appliance && recipe.appliance !== tag.appliance) {
+        return false; // La balise appareil ne correspond pas
+      }
+      if (tag.ustensils && !recipe.ustensils.includes(tag.ustensils)) {
+        return false; // La balise ustensiles ne correspond pas
+      }
+      return true; // Toutes les balises correspondent
     });
   });
+};
 
 export const handleChangeData = (
   searchValue = "",
@@ -33,27 +55,19 @@ export const handleChangeData = (
   tags,
   refresh = true
 ) => {
-  // console.log("recipes", recipes);
+  let filteredRecipes = [...recipes]; // Copie du tableau de recettes pour ne pas modifier l'original
 
   if (searchValue.length >= 3) {
-    recipes = filterRecipesBySearchValue(recipes, searchValue);
-  }
-
-  if (tags.length === 0) {
-
-
-    console.log("pass",searchValue,"tags",tags);
-    recipes = filterRecipesBySearchValue(recipes, searchValue);
-     Recipe(searchValue, recipes, tags);
-    console.log("lenghrecipes", recipes);
-    return recipes;
+    filteredRecipes = filterRecipesBySearchValue(filteredRecipes, searchValue);
   }
 
   if (tags.length > 0) {
-    recipes = filterRecipesByTags(recipes, tags);
+    filteredRecipes = filterRecipesByTags(filteredRecipes, tags);
   }
 
-  if (refresh) Recipe(searchValue, recipes, tags);
+  if (refresh) {
+    Recipe(searchValue, filteredRecipes, tags);
+  }
 
-  return recipes;
+  return filteredRecipes;
 };
