@@ -3,6 +3,7 @@ import Tags from "./Tags.js";
 
 const DropDown = (recipes, tags) => {
   const inputDropdowns = document.querySelectorAll(".dropdown__input");
+  const search = document.querySelector("#search-input");
   const searchValue = document.querySelector("#search-input").value;
   const btnDropdowns = document.querySelectorAll(".dropdown__btn");
 
@@ -25,9 +26,9 @@ const DropDown = (recipes, tags) => {
     recipes,
     filterName,
     tags,
-    searchValue
   ) => {
-    const data = handleChangeData(searchValue, recipes, tags, false);
+
+    const data = handleChangeData(search.value, recipes, tags, false);
 
     const lists = data.map((recipe) => recipe[filterName]);
 
@@ -74,9 +75,8 @@ const DropDown = (recipes, tags) => {
       [filterName]: value,
     });
 
-    console.log("tags", tags);
 
-    Tags(searchValue, recipes, tags);
+    Tags(search.value, recipes, tags);
 
     handleChangeData(searchValue, recipes, tags);
 
@@ -84,7 +84,7 @@ const DropDown = (recipes, tags) => {
   };
 
   const createListElements = (listDropdown, filterName) => {
-    handleIngredientsListUnique(recipes, filterName, tags, searchValue).forEach(
+    handleIngredientsListUnique(recipes, filterName, tags).forEach(
       (ingredient) => {
         const li = document.createElement("li");
         li.textContent = ingredient;

@@ -33,13 +33,26 @@ export const handleChangeData = (
   tags,
   refresh = true
 ) => {
+  // console.log("recipes", recipes);
+
   if (searchValue.length >= 3) {
     recipes = filterRecipesBySearchValue(recipes, searchValue);
+  }
+
+  if (tags.length === 0) {
+
+
+    console.log("pass",searchValue,"tags",tags);
+    recipes = filterRecipesBySearchValue(recipes, searchValue);
+     Recipe(searchValue, recipes, tags);
+    console.log("lenghrecipes", recipes);
+    return recipes;
   }
 
   if (tags.length > 0) {
     recipes = filterRecipesByTags(recipes, tags);
   }
+
   if (refresh) Recipe(searchValue, recipes, tags);
 
   return recipes;

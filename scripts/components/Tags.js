@@ -1,6 +1,6 @@
 import { handleChangeData } from "../utils/filterData.js";
 
-const Tags = (searchValue, recipes, tags) => {
+const Tags = (searchValue="", recipes, tags) => {
   const container = document.querySelector(".tags");
 
   const handleRemoveTag = (e) => {

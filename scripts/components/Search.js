@@ -2,7 +2,7 @@ import { fetchData } from "../utils/fetchData.js";
 import { filterRecipesBySearchValue } from "../utils/filterData.js";
 import Recipe from "./Recipes.js";
 
-const Search = (searchValue, recipes) => {
+const Search = (recipes) => {
   const search = document.querySelector("#search-input");
   const form = document.querySelector("form[name='search']");
 
@@ -16,7 +16,13 @@ const Search = (searchValue, recipes) => {
   };
 
   const handleInput = async (e) => {
-    searchValue = e.target.value.trim();
+   let searchValue = e.target.value.trim();
+
+    if (!searchValue) {
+      recipes = await fetchData();
+
+      return Recipe(searchValue, recipes);
+    }
 
     const validInput = /^[A-Za-z]+$/.test(searchValue);
 
@@ -26,9 +32,8 @@ const Search = (searchValue, recipes) => {
       return;
     }
 
-    if (!searchValue) return Recipe(recipes, searchValue);
-
     if (searchValue.length >= 3) {
+      // tags.push([]);
       recipes = await fetchData();
       recipes = filterRecipesBySearchValue(recipes, searchValue);
       Recipe(searchValue, recipes);

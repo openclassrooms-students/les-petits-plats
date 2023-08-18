@@ -9,13 +9,12 @@ import Tags from "./components/Tags.js";
 
 const main = async () => {
   let tags = [];
-  let searchValue = "";
   let recipes = await fetchData();
 
-  Search(searchValue, recipes);
+  Search(recipes);
   DropDown(recipes, tags);
-  Tags(searchValue, recipes, tags);
-  Recipe(searchValue, recipes);
+  Tags("",recipes, tags);
+  Recipe("",recipes);
 };
 
 main();
