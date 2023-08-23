@@ -24,11 +24,12 @@ const DropDown = (recipes, tags) => {
   };
 
 
-  const handleAddTag = (e) => {
+  const handleAddTag = (e, recipes) => {
     const listDropdown = e.currentTarget.parentNode;
     const contentDropdown = listDropdown.parentNode;
     const dropdown = contentDropdown.parentNode;
-    const filterName = dropdown.querySelector(".dropdown__btn").dataset.dropdown;
+    const filterName =
+      dropdown.querySelector(".dropdown__btn").dataset.dropdown;
 
     const value = e.target.textContent;
     if (tags.some((tag) => tag[filterName] === value)) return;
@@ -36,7 +37,6 @@ const DropDown = (recipes, tags) => {
     tags.push({
       [filterName]: value,
     });
-
 
     Tags(search.value, recipes, tags);
 
@@ -46,21 +46,21 @@ const DropDown = (recipes, tags) => {
   };
 
   const createListElements = (listDropdown, filterName) => {
-    const data = {
+    const datas = {
       search: search.value,
       recipes: recipes,
       tags: tags,
       refresh: false,
     };
 
-    const list = createDropDownListUniqueFactory(filterName, data);
+    const {list,data} = createDropDownListUniqueFactory(filterName, datas);
 
     const fragment = document.createDocumentFragment();
 
     list.forEach((sortItem) => {
       const li = document.createElement("li");
       li.textContent = sortItem;
-      li.addEventListener("click", handleAddTag);
+      li.addEventListener("click", (e) => handleAddTag(e, data));
       fragment.appendChild(li);
     });
 
@@ -75,7 +75,6 @@ const DropDown = (recipes, tags) => {
     const allLiElements = parent.querySelectorAll(".dropdown__list li");
 
     allLiElements.forEach((element) => {
-      element.addEventListener("click", handleAddTag);
       if (value === "") element.style.display = "";
       const liValue = element.textContent || element.innerText;
       if (liValue.toUpperCase().indexOf(value) > -1) element.style.display = "";

@@ -31,7 +31,10 @@ const createDropDownListUniqueFactory = (
       break;
   }
 
-  return result.sort();
+  return {
+    list: result.sort(),
+    data,
+  };
 };
 
 export default createDropDownListUniqueFactory;

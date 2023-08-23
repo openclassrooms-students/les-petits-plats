@@ -12,9 +12,10 @@ const Tags = (searchValue, recipes, tags) => {
 
     if (tagIndex !== -1) {
       tags.splice(tagIndex, 1);
-      handleChangeData(searchValue, recipes, tags);
       updateTagsUI();
     }
+
+    handleChangeData(searchValue, recipes, tags);
   };
 
   const createTag = (tag) => {

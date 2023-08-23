@@ -23,6 +23,36 @@ export const filterRecipesBySearchValue = (recipes, searchValue) => {
   });
 };
 
+export const filterRecipesByTagsAndSearchValue = (
+  recipes,
+  tags,
+  searchValue
+) => {
+  const lowerSearchValue = searchValue.toLowerCase();
+
+  return recipes.filter((recipe) => {
+    const lowerName = recipe.name.toLowerCase();
+    const lowerDescription = recipe.description.toLowerCase();
+
+    const nameOrDescriptionMatch =
+      lowerName.includes(lowerSearchValue) ||
+      lowerDescription.includes(lowerSearchValue);
+
+    const tagFilteredRecipes =
+      tags.length === 0 ? recipes : filterRecipesByTags(recipes, tags);
+
+    if (nameOrDescriptionMatch) {
+      return tagFilteredRecipes.includes(recipe); // Vérifier si la recette correspond aux balises filtrées
+    }
+
+    const ingredientsMatch = recipe.ingredients.some((ingredient) =>
+      ingredient.ingredient.toLowerCase().includes(lowerSearchValue)
+    );
+
+    return tagFilteredRecipes.includes(recipe) && ingredientsMatch;
+  });
+};
+
 export const filterRecipesByTags = (recipes, tags) => {
   if (tags.length === 0) {
     return recipes; // Pas besoin de filtrer si aucune balise n'est sélectionnée
@@ -30,44 +60,45 @@ export const filterRecipesByTags = (recipes, tags) => {
 
   return recipes.filter((recipe) => {
     return tags.every((tag) => {
-      if (
-        tag.ingredients &&
-        !recipe.ingredients.some(
-          (ingredient) => ingredient.ingredient === tag.ingredients
-        )
-      ) {
-        return false; // La balise ingrédient ne correspond pas
+      const tagName = Object.keys(tag)[0]; // Récupérer le nom de la balise (par exemple : "ingredients", "appliance", etc.)
+      const tagValue = tag[tagName]; // Récupérer la valeur de la balise (par exemple : "Ail", "Mixer", etc.)
+
+      if (tagName === "ingredients") {
+        return recipe.ingredients.some(
+          (ingredient) => ingredient.ingredient === tagValue
+        );
       }
-      if (tag.appliance && recipe.appliance !== tag.appliance) {
-        return false; // La balise appareil ne correspond pas
+      if (tagName === "appliance") {
+        return recipe.appliance === tagValue;
       }
-      if (tag.ustensils && !recipe.ustensils.includes(tag.ustensils)) {
-        return false; // La balise ustensiles ne correspond pas
+      if (tagName === "ustensils") {
+        return recipe.ustensils.includes(tagValue);
       }
-      return true; // Toutes les balises correspondent
+
+      return true; // Si la balise n'est pas gérée, la considérer comme correspondante
     });
   });
 };
 
-export const handleChangeData = (
-  searchValue = "",
-  recipes,
-  tags,
-  refresh = true
-) => {
-  let filteredRecipes = [...recipes]; // Copie du tableau de recettes pour ne pas modifier l'original
+export const handleChangeData = (searchValue = "", recipes, tags) => {
+  let filteredRecipes;
 
-  if (searchValue.length >= 3) {
-    filteredRecipes = filterRecipesBySearchValue(filteredRecipes, searchValue);
+  if (tags.length === 0 && searchValue.length === 0) {
+    filteredRecipes = recipes;
+  } else if (tags.length === 0) {
+    filteredRecipes = filterRecipesBySearchValue(recipes, searchValue);
+  } else if (searchValue.length === 0) {
+    filteredRecipes = filterRecipesByTags(recipes, tags);
+  } else {
+    const filteredValues = filterRecipesBySearchValue(recipes, searchValue);
+    filteredRecipes = filterRecipesByTagsAndSearchValue(
+      filteredValues,
+      tags,
+      searchValue
+    );
   }
 
-  if (tags.length > 0) {
-    filteredRecipes = filterRecipesByTags(filteredRecipes, tags);
-  }
-
-  if (refresh) {
-    Recipe(searchValue, filteredRecipes, tags);
-  }
+  Recipe(searchValue, filteredRecipes, tags);
 
   return filteredRecipes;
 };

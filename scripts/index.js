@@ -8,7 +8,7 @@ const main = async () => {
   let tags = [];
   let recipes = await fetchData();
 
-  Search(recipes);
+  Search(recipes, tags);
   DropDown(recipes, tags);
   Tags("",recipes, tags);
   Recipe("",recipes);
